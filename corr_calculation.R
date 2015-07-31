@@ -231,5 +231,30 @@ g
 plot(norm$Degree.of.Expert,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm$Degree.of.Expert))
 
+#Regression model for predicting sociality with Time Constraint as predictor!!
+
+y=norm_rename$Degree.of.Sociality
+x=norm_rename$Degree.of.Time.Constraint
+cor(y,x)
+yc = y - mean(y)
+xc = x - mean(x)
+beta1 = sum(yc*xc)/sum(xc^2)
+beta1_n = cor(y,x)* sd(y)/sd(x)
+beta0 = mean(y) - beta1*mean(x)
+c(beta0,coef(lm(y~x))[1])
+c(beta1,coef(lm(y~x))[2])
+lm(yc~xc - 1)
+
+library(ggplot2)
+g = ggplot(norm, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Time.Constraint))
+g = g + geom_point(size=12,colour="black",alpha=0.2)
+g = g + geom_point(size=12,colour="blue",alpha=0.2)
+g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g
+plot(norm$Degree.of.Time.Constraint,norm_rename$Degree.of.Sociality)
+abline(lm(norm_rename$Degree.of.Sociality~norm$Degree.of.Time.Constraint))
+
+
+
 
 
