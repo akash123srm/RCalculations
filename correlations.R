@@ -23,3 +23,14 @@ calc_spearman <- function(x){
 calc_spearman(norm)
 library(xlsx)
 write.xlsx(calc_spearman(norm),file="spearman.xlsx")
+
+
+#Function to calculate the Kendall Correlation between different axis
+
+calc_kendall <- function(x){
+        calc=format(round(cor(x[sapply(x, is.numeric)],use="pairwise.complete.obs",method="pearson"),4),nsmall=4)
+        return(calc)
+}
+calc_kendall(norm_rename)
+library(xlsx)
+write.xlsx(calc_kendall(norm),file="kendall.xlsx")
