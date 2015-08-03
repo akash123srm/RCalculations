@@ -1,4 +1,4 @@
-#R script for generating finding pearson & spearman correlations between different axis
+#R script for generating finding pearson,spearman & kendall correlations between different axis
 
 require(xlsx)
 norm_rename=read.xlsx("normalize.xlsx",sheetName = "Sheet1")
