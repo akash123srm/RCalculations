@@ -12,6 +12,13 @@ inTrain <- createDataPartition(y=norm_rename$Degree.of.Sociality,p=0.5,list=FALS
 training_data <- norm_rename[inTrain,]
 test_data <- norm_rename[-inTrain,]
 
+#Changing resampling method to Repeated Cross Fold Validation
+
+train_control <- trainControl(## 10-fold CV
+        method = "repeatedcv",
+        number = 10,
+        ## repeated three times
+        repeats = 3)
 
 #Regressions on Sociality!!
 
@@ -40,9 +47,9 @@ g
 plot(norm_rename$Degree.of.Layman,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Layman))
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Layman,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Layman,method="lm",trControl=train_control,data=trainig_data)
 finMod = modFit$finalModel
 predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
@@ -79,9 +86,9 @@ g
 plot(norm_rename$Degree.of.Operator,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Operator))
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Operator,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Operator,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -120,9 +127,9 @@ g
 plot(norm_rename$Degree.of.Expert,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Expert))
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Expert,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Expert,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -151,9 +158,7 @@ lm(yc~xc - 1)
 library(ggplot2)
 
 g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Time.Constraint))
-
 g = ggplot(norm, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Time.Constraint))
-
 g = g + geom_point(size=12,colour="black",alpha=0.2)
 g = g + geom_point(size=12,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
@@ -162,12 +167,11 @@ plot(norm_rename$Degree.of.Time.Constraint,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Time.Constraint))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Time.Constraint,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Time.Constraint,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
-
 qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
 predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
@@ -199,9 +203,9 @@ plot(norm_rename$Degree.of.Answer.Validity,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Answer.Validity))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Answer.Validity,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Answer.Validity,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -236,9 +240,9 @@ plot(norm_rename$Degree.of.Costs,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Costs))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Costs,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Costs,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -273,9 +277,9 @@ plot(norm_rename$Degree.of.Knowledge.Codification,norm_rename$Degree.of.Socialit
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Knowledge.Codification))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Knowledge.Codification,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Knowledge.Codification,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -310,9 +314,9 @@ plot(norm_rename$Degree.of.Knowledge.Codification,norm_rename$Degree.of.Location
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Location.Dependency))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Location.Dependency,method="lm",data=trainig_data)
+modFit = train(Degree.of.Sociality~Degree.of.Location.Dependency,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -348,9 +352,9 @@ g
 plot(norm_rename$Degree.of.Generality.Of.Applicability,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Generality.Of.Applicability))
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Generality.Of.Applicability,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Generality.Of.Applicability,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -388,9 +392,9 @@ g
 plot(norm_rename$Degree.of.Time.Constraint,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Time.Constraint))
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Time.Constraint,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Time.Constraint,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -430,9 +434,9 @@ plot(norm_rename$Degree.of.Answer.Validity,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Answer.Validity))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Answer.Validity,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Answer.Validity,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -469,9 +473,9 @@ plot(norm_rename$Degree.of.Costs,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Costs))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Costs,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Costs,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -508,9 +512,9 @@ plot(norm_rename$Degree.of.Knowledge.Codification,norm_rename$Degree.of.Mobility
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Knowledge.Codification))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Knowledge.Codification,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Knowledge.Codification,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
@@ -547,9 +551,9 @@ plot(norm_rename$Degree.of.Location.Dependency,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Location.Dependency))
 
 
-#Using Data Splitting method for model accuracy
+#Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Mobility~Degree.of.Location.Dependency,method="lm",data=trainig_data)
+modFit = train(Degree.of.Mobility~Degree.of.Location.Dependency,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
 plot(finMod)
 
