@@ -7,12 +7,8 @@ norm_rename=read.xlsx("normalize.xlsx",sheetName = "Sheet1")
 attach(norm_rename)
 
 
-library(caret)
-inTrain <- createDataPartition(y=norm_rename$Degree.of.Sociality,p=0.5,list=FALSE)
-training_data <- norm_rename[inTrain,]
-test_data <- norm_rename[-inTrain,]
-
 #Changing resampling method to Repeated Cross Fold Validation
+library(caret)
 
 train_control <- trainControl(## 10-fold CV
         method = "repeatedcv",
@@ -21,6 +17,10 @@ train_control <- trainControl(## 10-fold CV
         repeats = 3)
 
 #Regressions on Sociality!!
+
+inTrain <- createDataPartition(y=norm_rename$Degree.of.Sociality,p=0.5,list=FALSE)
+training_data <- norm_rename[inTrain,]
+test_data <- norm_rename[-inTrain,]
 
 #Regression model for predicting sociality with layman as predictor!!
 
@@ -326,6 +326,10 @@ qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
 
 
 #Regressions on Mobility!!
+
+inTrain <- createDataPartition(y=norm_rename$Degree.of.Sociality,p=0.5,list=FALSE)
+training_data <- norm_rename[inTrain,]
+test_data <- norm_rename[-inTrain,]
 
 #Regression model for predicting mobility with generality as a predictor!!
 
