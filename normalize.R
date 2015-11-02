@@ -1,5 +1,7 @@
 #R script for normalizing the axis & calculating their respective degrees
 
+options(max.print=1000000) 
+
 require(gdata)
 data_load = read.csv(file.choose(),header=TRUE)
 attach(data_load)
@@ -33,7 +35,7 @@ agg_social = aggregate((col_select$Ask.Questions + col_select$Give.Suggestions +
 #Function to normalize the mean
 
 normalize <- function(){
-        dr = data.frame()[1:18,c()]
+        dr = data.frame()[1:52,c()]
         dr[1] = agg[1]
         dr[2] = agg[2]
         for(i in 3:5){
@@ -66,7 +68,7 @@ names(norm)[12] = "Degree.of.Mobility"
 names(norm)[13] = "Degree.of.Sociality"
 norm_rename = norm
 library(xlsx)
-write.xlsx(norm,file="normalize.xlsx")
+write.xlsx(norm,file="normalize1.xlsx")
 
 '''dr = data[,c()]
 for(i in 1:length(col_select)){

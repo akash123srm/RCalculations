@@ -3,7 +3,7 @@
 
 require(rJava)
 require(xlsx)
-norm_rename=read.xlsx("normalize.xlsx",sheetName = "Sheet1")
+norm_rename=read.xlsx("normalize1.xlsx",sheetName = "Sheet1")
 attach(norm_rename)
 
 
@@ -37,12 +37,17 @@ c(beta1,coef(lm(y~x))[2])
 lm(yc~xc - 1)
 
 library(ggplot2)
-g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Layman))
-g = ggplot(norm, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Layman))
-g = g + geom_point(size=12,colour="black",alpha=0.2)
-g = g + geom_point(size=12,colour="blue",alpha=0.2)
+g = ggplot(norm_rename,aes(y=norm_rename$Degree.of.Socialness,x=norm_rename$Degree.of.Layman))
+
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g+theme(axis.title.x=element_text(size=25,face="bold"),
+        axis.title.y=element_text(size=25,face="bold"))
+g + xlab("Layman") + ylab("Socialness") 
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot1.png")
 g
+summary(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Layman))
 
 plot(norm_rename$Degree.of.Layman,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Layman))
@@ -94,11 +99,13 @@ plot(finMod)
 
 qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
 predicted_sociality = predict(finMod,test_data)
-qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
+q=qplot(Degree.of.Operator,Degree.of.Sociality,colour=Category,data=norm_rename)
+q + abline(data=finMod)
+q
 
 
-plot(norm$Degree.of.Operator,norm_rename$Degree.of.Sociality)
-abline(lm(norm_rename$Degree.of.Sociality~norm$Degree.of.Operator))
+plot(norm_rename$Degree.of.Operator,norm_rename$Degree.of.Sociality)
+abline(finMod)
 
 
 #Regression model for predicting sociality with expert as predictor!!
@@ -135,9 +142,11 @@ plot(finMod)
 
 qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
 predicted_sociality = predict(finMod,test_data)
-qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
+qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=training_data)
+abline(finMod)
 
 plot(norm$Degree.of.Expert,norm_rename$Degree.of.Sociality)
+abline(finMod)
 abline(lm(norm_rename$Degree.of.Sociality~norm$Degree.of.Expert))
 
 
@@ -158,19 +167,22 @@ lm(yc~xc - 1)
 library(ggplot2)
 
 g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Time.Constraint))
-g = ggplot(norm, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Time.Constraint))
-g = g + geom_point(size=12,colour="black",alpha=0.2)
-g = g + geom_point(size=12,colour="blue",alpha=0.2)
+
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g + xlab("Time Constraint") + ylab("Socialness") 
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot2.png")
 g
+
+
 plot(norm_rename$Degree.of.Time.Constraint,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Time.Constraint))
-
+summary(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Time.Constraint))$r.squared
 
 #Using Data Splitting & repeatedcv method for model accuracy
 
-modFit = train(Degree.of.Sociality~Degree.of.Time.Constraint,trControl=train_control,method="lm",data=trainig_data)
-finMod = modFit$finalModel
+
 plot(finMod)
 qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
 predicted_sociality = predict(finMod,test_data)
@@ -194,25 +206,35 @@ lm(yc~xc - 1)
 library(ggplot2)
 
 g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Answer.Validity))
-g = ggplot(norm, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Answer.Validity))
-g = g + geom_point(size=12,colour="black",alpha=0.2)
-g = g + geom_point(size=12,colour="blue",alpha=0.2)
+
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g + xlab("Answer Validity") + ylab("Socialness") 
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot3.png")
 g
 plot(norm_rename$Degree.of.Answer.Validity,norm_rename$Degree.of.Sociality)
 abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Answer.Validity))
-
+summary(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Answer.Validity))$r.squared
 
 #Using Data Splitting & repeatedcv method for model accuracy
 
 modFit = train(Degree.of.Sociality~Degree.of.Answer.Validity,trControl=train_control,method="lm",data=trainig_data)
 finMod = modFit$finalModel
-plot(finMod)
 
-qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
+
 predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
 
+g = ggplot(test_data, aes(y=Degree.of.Sociality,x=Degree.of.Answer.Validity))
+g = g + geom_point(size=12,colour="black",alpha=0.2)
+g = g + geom_point(size=12,colour="blue",alpha=0.2)
+
+g = g + geom_abline(data=predicted_sociality)
+
+plot(finMod)
+
+qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
 
 #Regression model to predict sociality with costs as a predictor
 
@@ -288,7 +310,7 @@ predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
 
 
-#Regression model to predict sociality with knowledge location as a predictor
+#Regression model to predict sociality with location as a predictor
 
 y=norm_rename$Degree.of.Sociality
 x=norm_rename$Degree.of.Location.Dependency
@@ -325,6 +347,50 @@ predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
 
 
+#Regression model to predict sociality with generality as a predictor
+
+y=norm_rename$Degree.of.Sociality
+x=norm_rename$Degree.of.Generality.Of.Applicability
+cor(y,x)
+yc = y - mean(y)
+xc = x - mean(x)
+beta1 = sum(yc*xc)/sum(xc^2)
+beta1_n = cor(y,x)* sd(y)/sd(x)
+beta0 = mean(y) - beta1*mean(x)
+c(beta0,coef(lm(y~x))[1])
+c(beta1,coef(lm(y~x))[2])
+lm(yc~xc - 1)
+
+library(ggplot2)
+
+g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Sociality,x=norm_rename$Degree.of.Generality.Of.Applicability))
+
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
+g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g+theme(axis.title.x=element_text(size=20,face="bold"),
+        axis.title.y=element_text(ylab="Sociality",size=20,face="bold"))
+
+g + xlab("Generality of Applicability") + ylab("Socialness")
+
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot4.png")
+g
+
+plot(norm_rename$Degree.of.Knowledge.Codification,norm_rename$Degree.of.Generality.Of.Applicability)
+abline(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Generality.Of.Applicability))
+summary(lm(norm_rename$Degree.of.Sociality~norm_rename$Degree.of.Generality.Of.Applicability))$r.squared
+
+#Using Data Splitting & repeatedcv method for model accuracy
+
+modFit = train(Degree.of.Sociality~Degree.of.Location.Dependency,trControl=train_control,method="lm",data=trainig_data)
+finMod = modFit$finalModel
+plot(finMod)
+
+qplot(finMod$fitted,finMod$residuals,colour=Category,data=training_data)
+predicted_sociality = predict(finMod,test_data)
+qplot(Degree.of.Sociality,predicted_sociality,colour=Category,data=test_data)
+
+
 #Regressions on Mobility!!
 
 inTrain <- createDataPartition(y=norm_rename$Degree.of.Sociality,p=0.5,list=FALSE)
@@ -349,9 +415,12 @@ library(ggplot2)
 g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degree.of.Generality.Of.Applicability))
 g = ggplot(norm, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degree.of.Generality.Of.Applicability))
 
-g = g + geom_point(size=6,colour="black",alpha=0.2)
-g = g + geom_point(size=6,colour="blue",alpha=0.2)
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g + xlab("Generality of Applicability") + ylab("Mobileness")
+
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot1_mobile.png")
 g
 plot(norm_rename$Degree.of.Generality.Of.Applicability,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Generality.Of.Applicability))
@@ -367,7 +436,7 @@ predicted_sociality = predict(finMod,test_data)
 qplot(Degree.of.Mobility,predicted_sociality,colour=Category,data=test_data)
 
 plot(norm_rename$Degree.of.Generality.Of.Applicability,norm$Degree.of.Mobility)
-abline(lm(norm_rename$Degree.of.Mobility~norm$Degree.of.Generality.Of.Applicability))
+abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Generality.Of.Applicability))
 
 
 #Regression model for predicting mobility with Time Constraint as a predictor!!
@@ -430,9 +499,12 @@ g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degre
 
 g = ggplot(norm, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degree.of.Answer.Validity))
 
-g = g + geom_point(size=12,colour="black",alpha=0.2)
-g = g + geom_point(size=12,colour="blue",alpha=0.2)
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g + xlab("Answer Validity") + ylab("Mobileness")
+
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot2_mobile.png")
 g
 plot(norm_rename$Degree.of.Answer.Validity,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Answer.Validity))
@@ -508,10 +580,14 @@ g = ggplot(norm_rename, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degre
 
 g = ggplot(norm, aes(y=norm_rename$Degree.of.Mobility,x=norm_rename$Degree.of.Knowledge.Codification))
 
-g = g + geom_point(size=12,colour="black",alpha=0.2)
-g = g + geom_point(size=12,colour="blue",alpha=0.2)
+g = g + geom_point(size=3,colour="black",alpha=0.2)
+g = g + geom_point(size=3,colour="blue",alpha=0.2)
 g = g + geom_smooth(method="lm",formula=y~x,colour="black")
+g + xlab("Knowledge Codification") + ylab("Mobileness")
+g +ggsave(file="C:\\Users\\Akash\\Desktop\\tum-thesis-latex-master\\tum-thesis-latex-master\\figures\\plot3_mobile.png")
 g
+
+
 plot(norm_rename$Degree.of.Knowledge.Codification,norm_rename$Degree.of.Mobility)
 abline(lm(norm_rename$Degree.of.Mobility~norm_rename$Degree.of.Knowledge.Codification))
 
